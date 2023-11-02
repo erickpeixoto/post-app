@@ -34,7 +34,7 @@ export default function RootLayout({
               <ThemeSwitcher />
             </nav>
           </header>
-          <main>{children}</main>
+          <main className='p-10'>{children}</main>
           <footer></footer>
         </Providers>
       </body>

@@ -17,6 +17,7 @@ model User {
   name  String?
   posts Post[]
   followers Follower[]
+  createdAt DateTime @default(now())
 
 }
 

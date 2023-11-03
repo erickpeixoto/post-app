@@ -1,7 +1,7 @@
 import UserList from '@/app/components/UserList'
 import UserForm from '@/app/components/UserForm'
 import { User } from '@prisma/client'
-import { createUser } from '@/app/actions/user'
+import { createUser } from '@/app/lib/actions/user'
 
 export default async function User() {
   const users: User[] = await fetch(`${process.env.APP_URL_DEV}/api/user`, {

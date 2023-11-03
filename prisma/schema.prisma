@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
@@ -13,27 +10,33 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String?
-  posts Post[]
-  followers Follower[]
-  createdAt DateTime @default(now())
-
+  id        Int       @id @default(autoincrement())
+  name      String?
+  posts     Post[]
+  following Follow[]  @relation("UserFollowing")
+  followers Follow[]  @relation("UserFollowers")
+  createdAt DateTime  @default(now())
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  content   String?
-  rePostComment String?
-  published DateTime @default(now())    
-  authorId  Int
-  author    User?   @relation(fields: [authorId], references: [id])
+  id             Int       @id @default(autoincrement())
+  content        String?
+  rePostComment  String?
+  published      DateTime? @default(now())    
+  authorId       Int
+  author         User      @relation(fields: [authorId], references: [id])
 
   @@index([authorId])
 }
-model Follower {
-  id        Int     @id @default(autoincrement())
-  userId    Int
-  user      User    @relation(fields: [userId], references: [id])
-}
 
+model Follow {
+  id              Int     @id @default(autoincrement())
+  followerId      Int
+  followingId     Int
+  follower        User    @relation(name: "UserFollowers", fields: [followerId], references: [id])
+  following       User    @relation(name: "UserFollowing", fields: [followingId], references: [id])
+  
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}

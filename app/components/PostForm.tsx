@@ -3,11 +3,12 @@
 import { Button, Textarea, cn } from '@nextui-org/react'
 import { useRef, useState } from 'react'
 
+export interface PostFormProps {
+  postAction: (params: FormData) => Promise<void>
+}
 export const PostForm = ({
   postAction
-}: {
-  postAction: (params: FormData) => Promise<void>
-}) => {
+}: PostFormProps) => {
   const formRef = useRef(null) as any
   const [validationError, setValidationError] = useState({} as any)
   const [characterCount, setCharacterCount] = useState(0)

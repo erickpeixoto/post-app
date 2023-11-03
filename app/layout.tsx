@@ -28,6 +28,9 @@ export default function RootLayout({
                   <Link href='/'>All posts</Link>
                 </li>
                 <li>
+                  <Link href='/following'>Following</Link>
+                </li>
+                <li>
                   <Link href='/user'>Users</Link>
                 </li>
               </ul>

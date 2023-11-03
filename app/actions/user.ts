@@ -1,7 +1,6 @@
 'use server'
 
 import { revalidatePath } from "next/cache"
-
  
 export async function createUser(user: Iterable<readonly [PropertyKey, string]>) {
     try {

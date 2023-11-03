@@ -23,12 +23,11 @@ model User {
 
 model Post {
   id        Int     @id @default(autoincrement())
-  title     String
   content   String?
   rePostComment String?
   published DateTime @default(now())    
   authorId  Int
-  author    User    @relation(fields: [authorId], references: [id])
+  author    User?   @relation(fields: [authorId], references: [id])
 
   @@index([authorId])
 }

@@ -12,34 +12,12 @@ export async function savePost(params: Post) {
   }
 }
 
-export async function getPosts(authorId?: number) {
-  try {
-    const posts = await db.post.findMany({
-      where: { authorId: authorId },
-      orderBy: { published: 'desc' },
-      select: {
-        id: true,
-        content: true,
-        published: true,
-        author: {
-            select: {
-                id: true,
-                name: true,
-            }
-        }
-    }
-    })
-    return posts
-  } catch (error: any) {
-    throw new Error(error)
-  }
-}
 
-
-export async function getPostsFromFollowingUsers(userId: number) {
+export async function getPosts(userId: number) {
   try {
-    const posts = await db.post.findMany({
-      where: {
+    let whereClause = {};
+    if (userId !== 0) {
+      whereClause = {
         author: {
           followers: {
             some: {
@@ -47,7 +25,11 @@ export async function getPostsFromFollowingUsers(userId: number) {
             },
           },
         },
-      },
+      };
+    }
+
+    const posts = await db.post.findMany({
+      where: whereClause,
       orderBy: {
         published: 'desc',
       },
@@ -59,6 +41,7 @@ export async function getPostsFromFollowingUsers(userId: number) {
           select: {
             id: true,
             name: true,
+            username: true,
           },
         },
       },
@@ -69,4 +52,3 @@ export async function getPostsFromFollowingUsers(userId: number) {
     throw new Error(error.message);
   }
 }
-

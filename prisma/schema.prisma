@@ -12,6 +12,7 @@ datasource db {
 model User {
   id        Int       @id @default(autoincrement())
   name      String?
+  username  String?   
   posts     Post[]
   following Follow[]  @relation("UserFollowing")
   followers Follow[]  @relation("UserFollowers")
@@ -20,7 +21,7 @@ model User {
 
 model Post {
   id             Int       @id @default(autoincrement())
-  content        String?
+  content        String?   @db.Text()
   rePostComment  String?
   published      DateTime? @default(now())    
   authorId       Int

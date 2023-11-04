@@ -42,12 +42,21 @@ export default function App({ action }: any) {
                     name='name'
                   />
                 </div>
+                <div className='flex justify-between px-1 py-2'>
+                  <Input
+                    autoFocus
+                    label=''
+                    placeholder='Enter your username'
+                    variant='bordered'
+                    name='username'
+                  />
+                </div>
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='flat' onPress={onClose}>
                   Close
                 </Button>
-                <Button color='primary' onPress={onClose} type='submit'>
+                <Button color='primary' type='submit'>
                   Save
                 </Button>
               </ModalFooter>

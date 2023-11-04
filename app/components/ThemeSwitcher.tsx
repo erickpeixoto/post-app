@@ -15,7 +15,7 @@ export default function ThemeSwitcher() {
   if (!mounted) return null
 
   return (
-    <div className='flex gap-4'>
+    <div className='flex gap-4 hidden md:block'>
       <Button size='sm' variant='flat' onClick={() => setTheme('light')}>
         Light
       </Button>

@@ -2,8 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Providers from './providers'
-import Link from 'next/link'
-import ThemeSwitcher from './components/ThemeSwitcher'
+import { Navbar } from '@/app/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode
 }) {
@@ -22,20 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <header className='py-6'>
-            <nav className='container flex items-center justify-between'>
-              <ul className='flex flex-row gap-3'>
-                <li>
-                  <Link href='/'>All posts</Link>
-                </li>
-                <li>
-                  <Link href='/following'>Following</Link>
-                </li>
-                <li>
-                  <Link href='/user'>Users</Link>
-                </li>
-              </ul>
-              <ThemeSwitcher />
-            </nav>
+            <Navbar />
           </header>
           <main className='p-10'>{children}</main>
           <footer></footer>

@@ -5,16 +5,17 @@ import { postSchema } from '@/app/lib/schemas/post'
 import { savePost } from '../post'
 
 export async function createPost(params: FormData) {
-  const { content } = Object.fromEntries(params)
-  const { error: zodError }: any = postSchema.safeParse({ content })
-
+  const { content, authorId } = Object.fromEntries(params)
+  const { error: zodError }: any = postSchema.safeParse({ content, authorId })
+  console.log(zodError)
   if (zodError) {
     return { error: zodError.format() }
   }
-  const dataParsed = postSchema.parse({ content })
+  const dataParsed = postSchema.parse({ content, authorId })
 
   const { error }: any = await savePost({
-    content: dataParsed.content
+    content: dataParsed.content,
+    authorId: dataParsed.authorId,
   })
   if (error) throw new Error(error)
   revalidatePath('/')

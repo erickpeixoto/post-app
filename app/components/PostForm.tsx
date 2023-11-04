@@ -1,6 +1,7 @@
 'use client'
 
 import { Button, Textarea, cn } from '@nextui-org/react'
+import { useSearchParams } from 'next/navigation'
 import { useRef, useState } from 'react'
 
 export interface PostFormProps {
@@ -12,11 +13,17 @@ export const PostForm = ({
   const formRef = useRef(null) as any
   const [validationError, setValidationError] = useState({} as any)
   const [characterCount, setCharacterCount] = useState(0)
+  const useParams = useSearchParams()
 
   async function action(data: FormData) {
+
+    const authId = useParams.get('auth')
+    data.append('authorId', authId ?? '2')
+
     const result: any = await postAction(data)
     if (result?.error) {
       setValidationError(result?.error)
+
     } else {
       if (formRef.current.reset) {
         formRef.current.reset()
@@ -31,7 +38,7 @@ export const PostForm = ({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-tr from-pink-500 to-yellow-500 p-8 text-white shadow-lg',
           {
-            'from-pink-300  dark:text-white': validationError?.content
+            'bg-gradient-to-tr from-pink-200 to-yellow-500 p-8 text-white s': validationError?.content
           }
         )}
       >

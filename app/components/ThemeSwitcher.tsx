@@ -1,27 +1,21 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import { useTheme } from 'next-themes'
-import { Button } from '@nextui-org/button'
+import { Button } from '@nextui-org/react'
+import { SunIcon, MoonIcon } from 'lucide-react'
 
 export default function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false)
-  const { setTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
-
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light')
+  }
+  if (!theme) return null
   return (
-    <div className='flex gap-4 hidden md:block'>
-      <Button size='sm' variant='flat' onClick={() => setTheme('light')}>
-        Light
-      </Button>
-      <Button size='sm' variant='flat' onClick={() => setTheme('dark')}>
-        Dark
-      </Button>
-    </div>
+    <Button size='sm' variant='flat' onClick={toggleTheme}>
+      {theme === 'light' ? (
+        <MoonIcon className='h-5 w-5' />
+      ) : (
+        <SunIcon className='h-5 w-5' />
+      )}
+    </Button>
   )
 }

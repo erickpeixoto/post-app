@@ -11,11 +11,11 @@ export const UserAuth = async ({ authId }: UserAuthProps) => {
 
   return (
     // show the auth name and and Icon to /user
-    <div className='fixed right-10 top-7 flex hidden items-center justify-between md:block'>
+    <div className='fixed right-10 top-8 flex hidden items-center justify-between md:block'>
       <div className='flex items-center gap-3'>
         <div className='flex items-center'>
-          <span className='font-semibold'>{auth?.name}, </span>
-          <span className='ml-1 text-primary'>@{auth?.username}</span>
+          <span className='font-semibold truncate max-w-[130px]'>{auth?.name}, </span>
+          <span className='ml-1 text-primary '>@{auth?.username}</span>
           <span className='ml-1 text-gray-500'>
             <Link
               href={`/user/?auth=${authId}`}

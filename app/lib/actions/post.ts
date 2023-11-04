@@ -7,7 +7,7 @@ import { savePost } from '../post'
 export async function createPost(params: FormData) {
   const { content, authorId } = Object.fromEntries(params)
   const { error: zodError }: any = postSchema.safeParse({ content, authorId })
-  console.log(zodError)
+
   if (zodError) {
     return { error: zodError.format() }
   }

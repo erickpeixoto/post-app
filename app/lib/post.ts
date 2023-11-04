@@ -1,9 +1,8 @@
 'use server'
 
 import { db } from '@/db'
-import { Post } from '@prisma/client'
 
-export async function savePost(params: Post) {
+export async function savePost(params: { content: string, authorId: number }) {
   try {
     const post = await db.post.create({ data: params })
     return post

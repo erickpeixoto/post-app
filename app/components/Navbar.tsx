@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 
 export const Navbar = () => {
   const params = useSearchParams()
-  const authId = params.get('auth')
+  const authId = params.get('auth') ?? '1'
 
   return (
 
@@ -15,13 +15,13 @@ export const Navbar = () => {
         </Link>
       <ul className='flex flex-row gap-3'>
         <li>
-          <Link href={`/?flow=all&auth=${authId ?? '2'}`}>All posts</Link>
+          <Link href={`/?flow=all&auth=${authId}`}>All posts</Link>
         </li>
         <li>
-          <Link href={`/?flow=following&auth=${authId ?? '2'}`}>Following</Link>
+          <Link href={`/?flow=following&auth=${authId}`}>Following</Link>
         </li>
         <li>
-          <Link href={`user/?auth=${authId ?? '2'}`}>Users</Link>
+          <Link href={`user/?auth=${authId}`}>Users</Link>
         </li>
       </ul>
       <ThemeSwitcher />

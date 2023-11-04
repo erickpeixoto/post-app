@@ -16,7 +16,7 @@ model User {
   posts     Post[]
   following Follow[]  @relation("UserFollowing")
   followers Follow[]  @relation("UserFollowers")
-  createdAt DateTime  @default(now())
+  createdAt DateTime?  @default(now())
 }
 
 model Post {

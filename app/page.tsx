@@ -1,9 +1,8 @@
-import { PostForm, PostFormProps } from './components/PostForm'
+import { PostForm, PostFormProps } from '@/app/components/PostForm'
 import { formatDistanceToNow } from 'date-fns'
 import { Avatar, AvatarIcon } from '@nextui-org/react'
 
 import { getPosts } from '@/app/lib/post'
-import { getAuthUser } from '@/app/lib/user'
 import { createPost } from '@/app/lib/actions/post'
 import { UserAuth } from './components/UserAuth'
 

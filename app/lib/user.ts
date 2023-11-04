@@ -25,7 +25,24 @@ export async function getAuthUser(id: number) {
 
 export async function getUsers() {
   try {
-    const users = await db.user.findMany();
+    const users = await db.user.findMany({
+        select: {
+            id: true,
+            name: true,
+            username: true,
+            followers: {
+                select: {
+                    followingId: true,
+                },
+                },
+                following: {
+                select: {
+                    followerId: true,
+                },
+                },
+                createdAt: true,
+        },
+    });
     return users;
   } catch (error: any) {
     throw new Error(error.message);

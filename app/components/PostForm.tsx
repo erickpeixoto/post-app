@@ -34,10 +34,14 @@ export const PostForm = ({ postAction }: PostFormProps) => {
     <form ref={formRef} action={action}>
       <div
         className={cn(
-          'flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-tr from-pink-500 to-yellow-500 p-8 text-white shadow-lg',
+          'flex w-full items-center justify-center gap-2 rounded-2xl p-8 shadow-lg',
           {
-            'bg-gradient-to-tr from-pink-100 to-yellow-500':
+            'bg-gradient-to-tr from-pink-500 to-yellow-100':
               validationError?.content
+          },  
+          {
+            'bg-gradient-to-tr from-pink-500 to-yellow-500':
+              !validationError?.content
           }
         )}
       >
@@ -84,7 +88,7 @@ export const PostForm = ({ postAction }: PostFormProps) => {
         p-2
         text-sm
         font-semibold
-        text-red-500
+        text-black
       '
       >
         {JSON.stringify(validationError?.content?._errors.join(', '))}

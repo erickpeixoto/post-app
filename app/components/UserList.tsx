@@ -14,6 +14,7 @@ import { HeartHandshake, Heart } from 'lucide-react'
 import { followUser, unfollowUser } from '@/app/lib/follow'
 import { useCallback, useMemo, useState } from 'react'
 
+
 export default function UserList({ users }: { users: User[] }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -47,11 +48,11 @@ export default function UserList({ users }: { users: User[] }) {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.username}</TableCell>
               <TableCell>
-                {new Date(user.createdAt).toLocaleDateString('en-US', {
+                {user.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
-                })}
+                }) : 'N/A'}
               </TableCell>
               <TableCell>
                 {searchParams.get('auth') === user.id.toString() ? (

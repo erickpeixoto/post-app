@@ -71,7 +71,7 @@ export default function App({ userAction }: UserFormProps) {
                     isInvalid={validationError?.username}
                   />
                 </div>
-                {validationError && (
+                {validationError?.username?._errors.join(', ') && (
                   <p
                     className='
                    mt-2 rounded-lg

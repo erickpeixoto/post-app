@@ -18,15 +18,14 @@ export async function getPosts(userId: number) {
     if (userId !== 0) {
       whereClause = {
         author: {
-          followers: {
+          following: {
             some: {
-              followingId: userId,
+              followerId: userId,
             },
           },
         },
       };
     }
-
     const posts = await db.post.findMany({
       where: whereClause,
       orderBy: {
@@ -51,3 +50,39 @@ export async function getPosts(userId: number) {
     throw new Error(error.message);
   }
 }
+
+
+// export async function getPostsFromFollowingUsers(userId: number) {
+//   try {
+//     const posts = await db.post.findMany({
+//       where: {
+//         author: {
+//           followers: {
+//             some: {
+//               followingId: userId,
+//             },
+//           },
+//         },
+//       },
+//       orderBy: {
+//         published: 'desc',
+//       },
+//       select: {
+//         id: true,
+//         content: true,
+//         published: true,
+//         author: {
+//           select: {
+//             id: true,
+//             name: true,
+//           },
+//         },
+//       },
+//     });
+
+//     return posts;
+//   } catch (error: any) {
+//     throw new Error(error.message);
+//   }
+// }
+

@@ -6,23 +6,23 @@ import { getPosts } from '@/app/lib/post'
 import { createPost } from '@/app/lib/actions/post'
 import { UserAuth } from './components/UserAuth'
 
-
 interface SearchParams {
   auth?: string | null
   flow?: string | null
 }
 
 export default async function Home({
-  searchParams,
+  searchParams
 }: {
   searchParams: SearchParams
 }) {
-  const param = searchParams?.flow === 'following' ? searchParams?.auth ?? '0' : '0';
-  const posts = await getPosts(parseInt(param, 10));
- 
+  const param =
+    searchParams?.flow === 'following' ? searchParams?.auth ?? '0' : '0'
+  const posts = await getPosts(parseInt(param, 10))
+
   return (
     <div className='min-h-screen'>
-      <UserAuth authId={ searchParams?.auth ?? '1'} />
+      <UserAuth authId={searchParams?.auth ?? '1'} />
       <div className='container mx-auto'>
         <PostForm postAction={createPost as PostFormProps['postAction']} />
         <div className='mt-4'>
@@ -59,6 +59,11 @@ export default async function Home({
               </div>
             </div>
           ))}
+          {posts.length === 0 && (
+            <div className='mb-4 mt-6 flex justify-center rounded-lg bg-white p-4 shadow dark:bg-gray-800'>
+              <p className='font-semibold'>No posts yet</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

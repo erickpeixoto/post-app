@@ -13,13 +13,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { HeartHandshake, Heart } from 'lucide-react'
 import { followUser, unfollowUser } from '@/app/lib/follow'
 import { useCallback, useMemo, useState } from 'react'
+
 export default function UserList({ users }: { users: User[] }) {
   const router = useRouter()
   const searchParams = useSearchParams()
   const auth = searchParams.get('auth')
   const [loadingUserId, setLoadingUserId] = useState<number | null>(null)
 
-  const authUser = useMemo(() => users.find(user => user.id === Number(auth)), [users, auth]);
+  const authUser: any = useMemo(() => users.find(user => user.id === Number(auth)), [users, auth]);
   
   const isFollowing = useCallback(
     (userId: number) => {

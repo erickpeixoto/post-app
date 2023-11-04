@@ -7,23 +7,21 @@ import { useRef, useState } from 'react'
 export interface PostFormProps {
   postAction: (params: FormData) => Promise<void>
 }
-export const PostForm = ({
-  postAction
-}: PostFormProps) => {
+export const PostForm = ({ postAction }: PostFormProps) => {
   const formRef = useRef(null) as any
   const [validationError, setValidationError] = useState({} as any)
   const [characterCount, setCharacterCount] = useState(0)
   const useParams = useSearchParams()
 
   async function action(data: FormData) {
-
+    console.log('data', data)
     const authId = useParams.get('auth')
     data.append('authorId', authId ?? '2')
 
     const result: any = await postAction(data)
     if (result?.error) {
       setValidationError(result?.error)
-
+      console.log(result?.error)
     } else {
       if (formRef.current.reset) {
         formRef.current.reset()
@@ -38,7 +36,8 @@ export const PostForm = ({
         className={cn(
           'flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-tr from-pink-500 to-yellow-500 p-8 text-white shadow-lg',
           {
-            'bg-gradient-to-tr from-pink-200 to-yellow-500 p-8 text-white s': validationError?.content
+            'bg-gradient-to-tr from-pink-100 to-yellow-500':
+              validationError?.content
           }
         )}
       >
@@ -47,7 +46,6 @@ export const PostForm = ({
           radius='lg'
           minRows={2}
           isInvalid={validationError?.content}
-          errorMessage={validationError?.content?._errors.join(', ')}
           onChange={e => setCharacterCount(e.target.value.length)}
           classNames={{
             label: 'text-black/50 dark:text-white/90',
@@ -78,6 +76,19 @@ export const PostForm = ({
           Post it
         </Button>
       </div>
+      <p
+        className='
+       relative
+       -top-9
+        rounded-lg
+        p-2
+        text-sm
+        font-semibold
+        text-red-500
+      '
+      >
+        {JSON.stringify(validationError?.content?._errors.join(', '))}
+      </p>
       <div className='mt-3 text-sm text-black/70 dark:text-white/60 '>
         {characterCount}/777 characters
       </div>

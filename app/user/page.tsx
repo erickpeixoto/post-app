@@ -1,5 +1,5 @@
 import UserList from '@/app/components/UserList'
-import UserForm from '@/app/components/UserForm'
+import UserForm, { UserFormProps } from '@/app/components/UserForm'
 import { User } from '@prisma/client'
 import { createUser } from '@/app/lib/actions/user'
 import { getUsers } from '@/app/lib/user'
@@ -15,8 +15,7 @@ export default async function Home({ searchParams }: SearchParams) {
   return (
     <div className='flex flex-col gap-3'>
       <UserAuth authId={searchParams?.auth ?? '1'} />
-      <UserForm action={createUser} />
-
+      <UserForm userAction={createUser as UserFormProps['userAction']} />
       <div
         className='mt-[10px] flex w-1/2 flex-col gap-3
         rounded-lg bg-white p-4 shadow dark:bg-gray-800

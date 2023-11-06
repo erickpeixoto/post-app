@@ -26,7 +26,7 @@ export default function PostList({ posts }: PostListProps) {
     setPost(post)
   }
 
-  const handleAction = async (data: FormData) => {
+  const handleRetweetAction = async (data: FormData) => {
     const authId = useParams.get('auth')
     data.append('authorId', authId?.toString() ?? '1')
     data.append('postId', post?.id?.toString() ?? '')
@@ -85,7 +85,7 @@ export default function PostList({ posts }: PostListProps) {
         handleClose={() => setOpen(false)}
         type={typeForm}
         post={post as Post}
-        retweetAction={handleAction}
+        retweetAction={handleRetweetAction}
       />
       <div className='mt-4'>
         {posts?.map((post: any) => (

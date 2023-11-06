@@ -15,30 +15,32 @@ export async function createPost(params: FormData) {
 
   const { error }: any = await savePost({
     content: dataParsed.content,
-    authorId: dataParsed.authorId,
+    authorId: dataParsed.authorId
   })
   if (error) throw new Error(error)
   revalidatePath('/')
 }
 export async function createSharePost(params: FormData) {
-
   const { content, authorId, shareType, postId } = Object.fromEntries(params)
-  const { error: zodError }: any = shareSchema.safeParse({ content, authorId, shareType, postId  })
+  const { error: zodError }: any = shareSchema.safeParse({
+    content,
+    authorId,
+    shareType,
+    postId
+  })
 
   if (zodError) {
     return { error: zodError.format() }
   }
   const dataParsed = shareSchema.parse({ content, authorId, shareType, postId })
 
-  console.log(dataParsed)
-
   const { error }: any = await saveShare({
     content: dataParsed.content,
     authorId: dataParsed.authorId,
     shareType: dataParsed.shareType,
-    postId: dataParsed.postId,
+    postId: dataParsed.postId
   })
-  console.log(error)
+
   if (error) throw new Error(error)
   revalidatePath('/')
 }

@@ -17,6 +17,7 @@ export const RetweetForm = ({
 }: RetweetForm) => {
   const formRef = useRef(null) as any
   const [validationError, setValidationError] = useState({} as any)
+  const [characterCount, setCharacterCount] = useState(0)
 
   async function action(data: FormData) {
    
@@ -35,11 +36,18 @@ export const RetweetForm = ({
   return (
     <div className='flex w-2/3 flex-col items-center'>
       {/* Form to save a quote and retweet */}
-      <div className='flex flex-col items-center gap-5'>
+      <div className='flex flex-col items-center gap-3'>
         <p className='text-lg font-semibold'>Retweet</p>
         <p className='text-sm text-gray-500'>Retweet this to your followers?</p>
         <form ref={formRef} action={action}>
-  
+          <Textarea
+            placeholder='Add a comment'
+            className='w-full'
+            isInvalid={validationError?.content}
+            onChange={e => setCharacterCount(e.target.value.length)}
+            name='content'
+          />
+
           <div className='flex flex-row items-center gap-5'>
             <Button
               type='button'
@@ -57,12 +65,14 @@ export const RetweetForm = ({
               Retweet
             </Button>
           </div>
-
+          <div className='mt-3 text-sm text-black/70 dark:text-white/60 '>
+            {characterCount}/777 characters
+      </div>
         </form>
       </div>
       <div
         key={post.id}
-        className='mb- rounded-lg bg-white p-4 shadow dark:bg-gray-800 mt-10 '
+        className='mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-800'
       >
         <div className='flex space-x-4'>
           <Avatar

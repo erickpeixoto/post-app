@@ -14,6 +14,7 @@ model User {
   name      String?
   username  String?   
   posts     Post[]
+  shares    Share[]
   following Follow[]  @relation("UserFollowing")
   followers Follow[]  @relation("UserFollowers")
   createdAt DateTime?  @default(now())
@@ -22,17 +23,36 @@ model User {
 model Post {
   id               Int       @id @default(autoincrement())
   content          String?   @db.Text()
-  rePostComment    String?   
   published        DateTime? @default(now())    
   authorId         Int
   author           User      @relation(fields: [authorId], references: [id])
-  originalPostId   Int?     
-  isRepost         Boolean?  
+  originalShares   Share[]   @relation("PostOriginal") // compartilhamentos deste post como o post original
+  sharedPosts      Share[]   @relation("NewPostOriginal") // vezes que este post é o novo post em um compartilhamento
 
   @@index([authorId])
-  @@index([originalPostId])
 }
 
+model Share {
+  id          Int       @id @default(autoincrement())
+  postId      Int
+  userId      Int
+  content     String?   @db.Text()
+  shareType   ShareType
+  originalPost Post     @relation(name: "PostOriginal", fields: [postId], references: [id]) // o post original que está sendo compartilhado
+  sharingUser User     @relation(fields: [userId], references: [id])
+  newPostId   Int
+  sharedPost  Post     @relation(name: "NewPostOriginal", fields: [newPostId], references: [id]) // o novo post criado pelo compartilhamento
+
+  @@unique([postId, userId, newPostId])
+  @@index([postId])
+  @@index([userId])
+  @@index([newPostId])
+}
+
+enum ShareType {
+  RETWEET
+  QUOTE
+}
 model Follow {
   id              Int     @id @default(autoincrement())
   followerId      Int

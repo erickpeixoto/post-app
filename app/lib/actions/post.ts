@@ -1,8 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { postSchema } from '@/app/lib/schemas/post'
-import { savePost } from '../post'
+import { postSchema, shareSchema } from '@/app/lib/schemas/post'
+import { savePost, saveShare } from '../post'
 
 export async function createPost(params: FormData) {
   const { content, authorId } = Object.fromEntries(params)
@@ -17,6 +17,28 @@ export async function createPost(params: FormData) {
     content: dataParsed.content,
     authorId: dataParsed.authorId,
   })
+  if (error) throw new Error(error)
+  revalidatePath('/')
+}
+export async function createSharePost(params: FormData) {
+
+  const { content, authorId, shareType, postId } = Object.fromEntries(params)
+  const { error: zodError }: any = shareSchema.safeParse({ content, authorId, shareType, postId  })
+
+  if (zodError) {
+    return { error: zodError.format() }
+  }
+  const dataParsed = shareSchema.parse({ content, authorId, shareType, postId })
+
+  console.log(dataParsed)
+
+  const { error }: any = await saveShare({
+    content: dataParsed.content,
+    authorId: dataParsed.authorId,
+    shareType: dataParsed.shareType,
+    postId: dataParsed.postId,
+  })
+  console.log(error)
   if (error) throw new Error(error)
   revalidatePath('/')
 }

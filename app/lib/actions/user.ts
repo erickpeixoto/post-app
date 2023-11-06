@@ -7,7 +7,7 @@ import { saveUser } from '@/app/lib/user'
 export async function createUser(params: FormData) {
   const data = Object.fromEntries(params)
   const { error: zodError }: any = userSchema.safeParse(data)
-  console.log({ zodError })
+
   if (zodError) {
     return { error: zodError.format() }
   }

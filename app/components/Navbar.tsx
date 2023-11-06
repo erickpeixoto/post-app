@@ -21,7 +21,7 @@ export const Navbar = () => {
           <Link href={`/?flow=following&auth=${authId}`}>Following</Link>
         </li>
         <li>
-          <Link href={`user/?auth=${authId}`}>Users</Link>
+          <Link href={`/?flow=user-profile&auth=${authId}`}>Profile</Link>
         </li>
       </ul>
       <ThemeSwitcher />

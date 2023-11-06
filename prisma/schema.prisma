@@ -20,14 +20,17 @@ model User {
 }
 
 model Post {
-  id             Int       @id @default(autoincrement())
-  content        String?   @db.Text()
-  rePostComment  String?
-  published      DateTime? @default(now())    
-  authorId       Int
-  author         User      @relation(fields: [authorId], references: [id])
+  id               Int       @id @default(autoincrement())
+  content          String?   @db.Text()
+  rePostComment    String?   
+  published        DateTime? @default(now())    
+  authorId         Int
+  author           User      @relation(fields: [authorId], references: [id])
+  originalPostId   Int?     
+  isRepost         Boolean?  
 
   @@index([authorId])
+  @@index([originalPostId])
 }
 
 model Follow {

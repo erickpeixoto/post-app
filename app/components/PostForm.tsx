@@ -14,14 +14,12 @@ export const PostForm = ({ postAction }: PostFormProps) => {
   const useParams = useSearchParams()
 
   async function action(data: FormData) {
-    console.log('data', data)
     const authId = useParams.get('auth')
-    data.append('authorId', authId ?? '2')
+    data.append('authorId', authId ?? '1')
 
     const result: any = await postAction(data)
     if (result?.error) {
       setValidationError(result?.error)
-      console.log(result?.error)
     } else {
       if (formRef.current.reset) {
         formRef.current.reset()
@@ -34,7 +32,7 @@ export const PostForm = ({ postAction }: PostFormProps) => {
     <form ref={formRef} action={action}>
       <div
         className={cn(
-          'flex w-full items-center justify-center gap-2 rounded-2xl p-8 shadow-lg',
+          'flex w-full items-center justify-center gap-2 rounded-2xl p-8 shadow-lg z-20 relative',
           {
             'bg-gradient-to-tr from-pink-500 to-yellow-100':
               validationError?.content

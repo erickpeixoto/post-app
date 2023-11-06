@@ -14,7 +14,6 @@ import { HeartHandshake, Heart } from 'lucide-react'
 import { followUser, unfollowUser } from '@/app/lib/follow'
 import { useCallback, useMemo, useState } from 'react'
 
-
 export default function UserList({ users }: { users: User[] }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -31,6 +30,7 @@ export default function UserList({ users }: { users: User[] }) {
   );
 
   return (
+
     <div className='mt-[50px] flex flex-col gap-3'>
       <Table selectionMode='single' aria-label='User List Table'>
         <TableHeader>
@@ -67,7 +67,7 @@ export default function UserList({ users }: { users: User[] }) {
                 ) : (
                   <span
                     onClick={() => {
-                      router.push(`/user?auth=${user.id}`)
+                      router.push(`?flow=user-profile&auth=${user.id}`)
                     }}
                     className='
                   cursor-pointer text-sm text-gray-500
@@ -121,6 +121,7 @@ export default function UserList({ users }: { users: User[] }) {
         </TableBody>
       </Table>
     </div>
+
   )
 }
 function LoadingSpinner() {

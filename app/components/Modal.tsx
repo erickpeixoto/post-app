@@ -1,5 +1,5 @@
 "use client"
-import { useRouter } from "next/navigation"; // correção aqui
+import { useRouter, useSearchParams } from "next/navigation"; // correção aqui
 import { useEffect } from "react";
 import {
   Modal,
@@ -14,6 +14,8 @@ import {
 export default function App({ children, open }: { children: React.ReactNode, open: boolean }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
+  const params = useSearchParams()
+  const authId = params.get('auth') ?? '1'
 
   useEffect(() => {
     if (open) {
@@ -22,8 +24,8 @@ export default function App({ children, open }: { children: React.ReactNode, ope
   }, [open, onOpen]);
 
   const handleOnClose = () => {
-    onOpenChange(); // Passar false para fechar o modal
-    router.push('/'); // Redirecionar para a rota "/"
+    onOpenChange(); 
+    router.push(`/?auth=${authId}`);
   };
 
   return (

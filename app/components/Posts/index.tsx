@@ -35,16 +35,16 @@ export default function PostList({ posts }: PostListProps) {
     await createSharePost(data)
   }
 
-  const sharedPostRetweet = (shared: any) => {
-    switch (shared.shareType) {
+  const sharedPostRetweet = (post: any) => {
+    const { sharedPosts, content } = post
+    const shared = sharedPosts[0]
+
+    switch (shared?.shareType) {
       case 'RETWEET':
         return (
           <div className='m-3 flex gap-2 space-x-4'>
             <Repeat2 className='h-5 w-5 text-red-400' />
-            You retweeted from
-            <span className='ml-2 text-primary'>
-              {shared?.sharingUser?.name}, @{shared?.sharingUser?.username}
-            </span>
+            {shared?.sharingUser?.name} Retweeted
             <span className='text-primary'>
               {shared?.sharedPost?.published
                 ? formatDistanceToNow(new Date(shared?.sharedPost?.published), {
@@ -58,7 +58,7 @@ export default function PostList({ posts }: PostListProps) {
         return (
           <div className='m-3 flex space-x-4'>
             <Quote className='rotate-360 h-5 w-5 rotate-180 text-red-400' />
-            <span> {shared?.content} </span>
+            <span> {content} </span>
             <Quote className='h-5 w-5 text-red-400' />
             <span className='text-primary'>
               @{shared?.sharingUser?.username} -
@@ -86,6 +86,7 @@ export default function PostList({ posts }: PostListProps) {
         type={typeForm}
         post={post as Post}
         retweetAction={handleRetweetAction}
+        quoteAction={handleRetweetAction}
       />
       <div className='mt-4'>
         {posts?.map((post: any) => (
@@ -93,7 +94,8 @@ export default function PostList({ posts }: PostListProps) {
             key={post.id}
             className='mb-4 rounded-lg bg-white p-4 shadow dark:bg-gray-800'
           >
-            {post.sharedPosts.map((shared: any) => sharedPostRetweet(shared))}
+            {sharedPostRetweet(post)}
+
             <div className='mt-6 flex space-x-4'>
               <Avatar
                 icon={<AvatarIcon />}
@@ -104,9 +106,15 @@ export default function PostList({ posts }: PostListProps) {
               />
               <div className='flex-1'>
                 <div className='flex items-center'>
-                  <p className='font-semibold'>{post?.author?.name}</p>
+                  <p className='font-semibold'>{
+                    post?.sharedPosts?.length > 0
+                    ? post?.sharedPosts[0]?.originalPost?.author.name
+                    : post?.author?.name
+                  }</p>
                   <span className='ml-2 text-primary'>
-                    @{post?.author?.username}
+                    @{post?.sharedPosts?.length > 0
+                    ? post?.sharedPosts[0]?.originalPost?.author.username
+                    : post?.author?.username}
                   </span>
                   <span className='ml-2 text-primary'>·</span>
                   <span className='ml-2 text-primary'>
@@ -117,7 +125,11 @@ export default function PostList({ posts }: PostListProps) {
                       : 'N/A'}
                   </span>
                 </div>
-                <p className='mt-2'>{post.content}</p>
+                <p className='mt-2'>
+                  {post?.sharedPosts?.length > 0
+                    ? post?.sharedPosts[0]?.originalPost?.content
+                    : post?.content}
+                </p>
               </div>
 
               <div className='flex flex-row items-center gap-5'>

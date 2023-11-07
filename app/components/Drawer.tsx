@@ -5,6 +5,7 @@ import { X } from 'lucide-react'
 import { Drawer } from 'vaul'
 import { Button } from '@nextui-org/react'
 import { RetweetForm } from './Posts/RetweetForm'
+import { QuoteForm } from './Posts/QuoteForm'
 
 interface MyDrawerProps {
   isOpen: boolean
@@ -12,22 +13,22 @@ interface MyDrawerProps {
   type: 'RETWEET' | 'QUOTE'
   post: any
   retweetAction: (params: FormData) => Promise<void>
+  quoteAction: (params: FormData) => Promise<void>
   
 }
 
-export function MyDrawer({ isOpen, handleClose, type, post, retweetAction }: MyDrawerProps) {
+export function MyDrawer({ isOpen, handleClose, type, post, retweetAction, quoteAction }: MyDrawerProps) {
   const [open, setOpen] = useState(isOpen)
 
   useEffect(() => {
     setOpen(isOpen)
   }, [isOpen])
   return (
-    <Drawer.Root dismissible={false} open={open}>
+    <Drawer.Root dismissible={false} open={open} >
       <Drawer.Portal>
-        <Drawer.Overlay className='fixed inset-0 bg-black/40' />
+        <Drawer.Overlay className='fixed inset-0 bg-black/40'  />
         <Drawer.Content className='fixed bottom-0 left-0 right-0 mt-24 flex flex-col rounded-t-[10px]'>
           <div className='flex-1 rounded-t-[10px] bg-white p-4 dark:bg-gray-800 dark:text-white flex justify-center'>
-            <div  />
             <Button
               type='button'
               variant='ghost'
@@ -37,6 +38,7 @@ export function MyDrawer({ isOpen, handleClose, type, post, retweetAction }: MyD
               <X className=' text-black dark:text-white' />
             </Button>
             {type === "RETWEET" && <RetweetForm post={post} handleClose={handleClose} retweetAction={retweetAction} />}
+            {type === "QUOTE" && <QuoteForm post={post} handleClose={handleClose} quoteAction={quoteAction} />}
            
           </div>
         </Drawer.Content>

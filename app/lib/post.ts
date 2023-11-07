@@ -41,7 +41,7 @@ export async function saveShare({ content, authorId, shareType, postId }: any) {
 
     const newSharePost = await db.post.create({
       data: {
-        content: contentOriginalPost || content,
+        content: content || contentOriginalPost,
         authorId
       }
     })
@@ -118,9 +118,27 @@ export async function getPosts() {
             },
             sharedPost: {
               select: {
-                published: true
+                published: true,
               }
-            }
+            },
+            originalPost: {
+              select: {
+                published: true,
+                content: true,
+                author: {
+                  select: {
+                    name: true,
+                    username: true
+                  }
+                }
+              }
+            },
+           },
+        },
+        author: {
+          select: {
+            name: true,
+            username: true
           }
         }
       }

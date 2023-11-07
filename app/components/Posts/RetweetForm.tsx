@@ -1,6 +1,6 @@
 'use client'
 
-import { Textarea, Button, Avatar, AvatarIcon } from '@nextui-org/react'
+import { Button, Avatar, AvatarIcon } from '@nextui-org/react'
 import { formatDistanceToNow } from 'date-fns'
 import { useRef, useState } from 'react'
 
@@ -16,7 +16,7 @@ export const RetweetForm = ({
   retweetAction
 }: RetweetForm) => {
   const formRef = useRef(null) as any
-  const [validationError, setValidationError] = useState({} as any)
+  const [_, setValidationError] = useState({} as any)
 
   async function action(data: FormData) {
    

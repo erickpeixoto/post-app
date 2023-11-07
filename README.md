@@ -27,6 +27,64 @@ The Next Poster App is a simplified social media application, inspired by Twitte
 - TailwindCSS for utility-first styling for rapid UI development.
 - Date-fns for convenient date manipulations.
 
+
+## **Development Requirement**
+## **Homepage**
+
+- [x] Implement a feed to display all posts by default.
+- [x] Create a toggle switch labeled "All / Following."
+- [x] Enable feed filtering based on the toggle switch position:
+  - [x] When "All" is selected, show all users' posts.
+  - [x] When "Following" is selected, show posts only from followed users.
+- [x] Ensure the URL changes reflect the toggle state ("All" or "Following").
+- [x] Implement a direct URL access feature that shows the correct feed based on URL parameters.
+- [x] Add functionality to write and post new content on the homepage.
+
+## **User Profile Page**
+
+- [x] Develop the user profile page as a modal that overlays the homepage.
+- [x] Change the URL when the user profile page is opened.
+- [x] Display the user's information:
+  - [x] Username
+  - [x] Date joined (formatted as "Month Day, Year")
+  - [x] Number of followers and following
+  - [x] Total count of posts (including reposts and quote posts)
+- [x] Show a feed of all the user's posts, reposts, and quote posts.
+- [x] Implement the follow/unfollow feature:
+  - [x] Add a "Follow" button to follow the user.
+  - [x] Add an "Unfollow" button to unfollow the user.
+- [x] Ensure new posts made on the profile page are attributed to the profile's user.
+
+## **Users**
+
+- [x] Enforce a username character limit of 14, alphanumeric only.
+- [x] Implement a system for using hardcoded default users (for post creation and follow actions).
+
+## **Posts**
+
+- [x] Limit users to 5 posts per day (including reposts and quote posts).
+- [x] Set a maximum post character limit of 777.
+- [x] Display a live character count when users write a post.
+- [x] Prevent users from updating or deleting posts.
+- [x] Add functionality for users to repost others' content.
+- [x] Implement the ability for users to quote-post with a comment.
+
+## **Following**
+
+- [x] Allow users to follow others via the profile page.
+- [x] Prevent users from following themselves.
+- [x] Implement follow/unfollow functionality.
+
+## **General and Submission**
+
+- [x] Review the test instructions, submission instructions, FAQ, and evaluation criteria in the briefing.
+- [x] Ensure all features are consistent with the provided briefing document.
+- [x] Perform thorough testing of all features before submission.
+- [x] Prepare the project for submission according to the briefing instructions.
+
+
+
+
 ## Installation and Usage
 
 Clone the repository, install dependencies, and run the development server:

@@ -7,7 +7,7 @@ import { useRef, useState } from 'react'
 interface RetweetForm {
   post: any
   handleClose: () => void
-  retweetAction: (params: FormData) => Promise<void>
+  retweetAction: (params: FormData) => void
 }
 
 export const RetweetForm = ({
@@ -16,13 +16,13 @@ export const RetweetForm = ({
   retweetAction
 }: RetweetForm) => {
   const formRef = useRef(null) as any
-  const [_, setValidationError] = useState({} as any)
+  const [validationError, setValidationError] = useState({} as any)
 
   async function action(data: FormData) {
-   
     const result: any = await retweetAction(data)
     if (result?.error) {
-      setValidationError(result?.error)
+      console.log(result?.error)
+      setValidationError(result)
     } else {
       if (formRef.current.reset) {
         formRef.current.reset()
@@ -30,16 +30,34 @@ export const RetweetForm = ({
       setValidationError(null)
     }
   }
-  
+
+  const handleSubmit = (e: any) => {
+    if (!validationError?.error) handleClose()
+  }
 
   return (
     <div className='flex w-2/3 flex-col items-center'>
-      {/* Form to save a quote and retweet */}
+      {validationError?.error && (
+        <p
+          className='
+                   mb-5 mt-5 rounded-lg
+                   border border-red-500
+                   bg-red-100
+                   p-2
+                   text-sm
+                   font-semibold
+                   text-red-500
+                 
+                 '
+        >
+          <p>{JSON.stringify(validationError?.error)}</p>
+        </p>
+      )}
+
       <div className='flex flex-col items-center gap-5'>
         <p className='text-lg font-semibold'>Retweet</p>
         <p className='text-sm text-gray-500'>Retweet this to your followers?</p>
         <form ref={formRef} action={action}>
-  
           <div className='flex flex-row items-center gap-5'>
             <Button
               type='button'
@@ -52,17 +70,16 @@ export const RetweetForm = ({
             <Button
               type='submit'
               className='text-sm text-primary'
-              onClick={handleClose}
+              onClick={handleSubmit}
             >
               Retweet
             </Button>
           </div>
-
         </form>
       </div>
       <div
         key={post.id}
-        className='mb- rounded-lg bg-white p-4 shadow dark:bg-gray-800 mt-10 '
+        className='mb- mt-10 rounded-lg bg-white p-4 shadow dark:bg-gray-800 '
       >
         <div className='flex space-x-4'>
           <Avatar

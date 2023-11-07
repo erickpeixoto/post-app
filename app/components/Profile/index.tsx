@@ -1,13 +1,20 @@
-import UserList from '@/app/components/UserList'
-import UserForm, { UserFormProps } from '@/app/components/UserForm'
-import { User } from '@prisma/client'
+import UserList from '@/app/components/Profile/UserList'
+import UserForm, { UserFormProps } from '@/app/components/Profile/UserForm'
+import { Post, User } from '@prisma/client'
 import { createUser } from '@/app/lib/actions/user'
 import Modal from '@/app/components/Modal'
+import { getAuthUser } from '@/app/lib/user'
+import PostList from '../Posts/PostList'
+import { ScrollShadow } from '@nextui-org/react'
+
 
 interface ProfileProps {
   users: User[]
+  authId: string | null
 }
-export default async function Profile({ users }: ProfileProps) {
+export default async function Profile({ users, authId }: ProfileProps) {
+  const auth = await getAuthUser(parseInt(authId!, 10))
+
   return (
     <Modal open={true}>
       <div className='flex flex-col gap-3'>
@@ -34,6 +41,21 @@ export default async function Profile({ users }: ProfileProps) {
         </div>
 
         <UserList users={users} />
+
+   
+        <h3 className='mt-5'>My Posts</h3>
+     
+        <ScrollShadow className='h-[400px]'>
+          {auth && auth?.posts?.length > 0 ?
+            <PostList posts={auth?.posts as unknown as Post[]} />
+         : (
+            <div className='flex flex-col items-center gap-3'>
+              <span className='text-sm text-gray-500'>
+                You have not created any posts yet.
+              </span>
+            </div>
+          )}
+        </ScrollShadow>
       </div>
     </Modal>
   )

@@ -11,7 +11,7 @@ import {
 import { User } from '@prisma/client'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { HeartHandshake, Heart } from 'lucide-react'
-import { followUser, unfollowUser } from '@/app/lib/follow'
+import { saveFollow, saveUnFollow  } from '@/app/lib/follow'
 import { useCallback, useMemo, useState } from 'react'
 
 export default function UserList({ users }: { users: User[] }) {
@@ -31,7 +31,7 @@ export default function UserList({ users }: { users: User[] }) {
 
   return (
 
-    <div className='mt-[50px] flex flex-col gap-3'>
+    <div className='mt-[50px] flex flex-col gap-3 '>
       <Table selectionMode='single' aria-label='User List Table'>
         <TableHeader>
           <TableColumn>ID</TableColumn>
@@ -40,9 +40,13 @@ export default function UserList({ users }: { users: User[] }) {
           <TableColumn>CREATED AT</TableColumn>
           <TableColumn>USER LOGGED</TableColumn>
           <TableColumn>FOLLOW/UNFOLLOW</TableColumn>
+          <TableColumn>TOTAL OF FOLLOWERS </TableColumn>
+          <TableColumn>TOTAL OF FOLLOWING </TableColumn>
+          <TableColumn>TOTAL OF POSTS </TableColumn>
+
         </TableHeader>
         <TableBody>
-          {users?.map(user => (
+          {users?.map((user: any) => (
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
               <TableCell>{user.name}</TableCell>
@@ -88,7 +92,10 @@ export default function UserList({ users }: { users: User[] }) {
                       onClick={async () => {
                         setLoadingUserId(user.id)
                         try {
-                          await unfollowUser(Number(auth), user.id)
+                          await saveFollow({
+                            followerId: Number(auth),
+                            followingId: user.id
+                          })
                           router.refresh()
                         } catch (error) {
                           console.error('Failed to unfollow user:', error)
@@ -105,7 +112,10 @@ export default function UserList({ users }: { users: User[] }) {
                     onClick={async () => {
                       setLoadingUserId(user.id)
                       try {
-                        await followUser(Number(auth), user.id)
+                        await saveFollow({
+                          followerId: Number(auth),
+                          followingId: user.id
+                        })
                         router.refresh()
                       } catch (error) {
                         console.error('Failed to follow user:', error)
@@ -115,6 +125,15 @@ export default function UserList({ users }: { users: User[] }) {
                     className='h-7 w-7 cursor-pointer text-gray-300 transition-all hover:text-pink-500'
                   />
                 )}
+              </TableCell>
+              <TableCell>
+                {user._count?.following}
+              </TableCell>
+              <TableCell>
+                {user._count?.followers}
+              </TableCell>
+              <TableCell>
+                {user._count?.posts}
               </TableCell>
             </TableRow>
           ))}

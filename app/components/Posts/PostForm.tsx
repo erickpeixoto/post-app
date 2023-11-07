@@ -2,7 +2,7 @@
 
 import { Button, Textarea, cn } from '@nextui-org/react'
 import { useSearchParams } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export interface PostFormProps {
   postAction: (params: FormData) => Promise<void>
@@ -18,6 +18,7 @@ export const PostForm = ({ postAction }: PostFormProps) => {
     data.append('authorId', authId ?? '1')
 
     const result: any = await postAction(data)
+    console.log({result})
     if (result?.error) {
       setValidationError(result?.error)
     } else {
@@ -27,7 +28,10 @@ export const PostForm = ({ postAction }: PostFormProps) => {
       setValidationError(null)
     }
   }
-
+  useEffect(() => {
+    console.log({ validationError })
+  }
+  , [validationError])
   return (
     <form ref={formRef} action={action}>
       <div
@@ -47,8 +51,9 @@ export const PostForm = ({ postAction }: PostFormProps) => {
           name='content'
           radius='lg'
           minRows={2}
-          isInvalid={validationError?.content}
+          isInvalid={validationError?.content || validationError}
           onChange={e => setCharacterCount(e.target.value.length)}
+          errorMessage={validationError?.content?._errors.join(', ') || validationError?.error}
           classNames={{
             label: 'text-black/50 dark:text-white/90',
             input: [
@@ -78,20 +83,8 @@ export const PostForm = ({ postAction }: PostFormProps) => {
           Post it
         </Button>
       </div>
-      <p
-        className='
-       relative
-       -top-9
-        rounded-lg
-        p-2
-        text-sm
-        font-semibold
-        text-black
-      '
-      >
-        {JSON.stringify(validationError?.content?._errors.join(', '))}
-      </p>
-      <div className='mt-3 text-sm text-black/70 dark:text-white/60 '>
+
+      <div className='mt-10 text- text-black/70 dark:text-white/60 '>
         {characterCount}/777 characters
       </div>
     </form>

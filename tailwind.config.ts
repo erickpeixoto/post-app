@@ -23,15 +23,15 @@ const config: Config = {
     nextui({
       themes: {
         light: {
-          layout: {}, // light theme layout tokens
-          colors: {} // light theme colors
+          layout: {}, 
+          colors: {} 
         },
         dark: {
-          layout: {}, // dark theme layout tokens
-          colors: {} // dark theme colors
+          layout: {}, 
+          colors: {} 
         },
         modern: {
-          extend: 'dark', // <- inherit default values from dark theme
+          extend: 'dark', 
           colors: {
             background: '#0D001A',
             foreground: '#ffffff',

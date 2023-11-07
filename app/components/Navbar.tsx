@@ -9,11 +9,14 @@ export const Navbar = () => {
 
   return (
 
-    <nav className='container flex items-center justify-between pr-[180px]'>
+    <nav className='container flex items-center  pr-[180px] gap-5'>
         <Link href='/'>
             <span className='text-[30px] text-pink-500 '>Poster</span>
+          
         </Link>
-      <ul className='flex flex-row gap-3'>
+  
+      <ThemeSwitcher />
+      <ul className='flex flex-row gap-3 ml-10'>
         <li>
           <Link href={`/?flow=all&auth=${authId}`}>All posts</Link>
         </li>
@@ -24,7 +27,6 @@ export const Navbar = () => {
           <Link href={`/?flow=user-profile&auth=${authId}`}>Profile</Link>
         </li>
       </ul>
-      <ThemeSwitcher />
     </nav>
   )
 }

@@ -10,7 +10,6 @@ export const UserAuth = async ({ authId }: UserAuthProps) => {
   const auth = await getAuthUser(parseInt(authId, 10))
 
   return (
-    // show the auth name and and Icon to /user
     <div className='fixed right-10 top-8 flex hidden items-center justify-between md:block'>
       <div className='flex items-center gap-3'>
         <div className='flex items-center'>
@@ -18,7 +17,7 @@ export const UserAuth = async ({ authId }: UserAuthProps) => {
           <span className='ml-1 text-primary '>@{auth?.username}</span>
           <span className='ml-1 text-gray-500'>
             <Link
-              href={`/user/?auth=${authId}`}
+              href={`?flow=user-profile&auth=${authId}`}
               title='By clicking here, you can select a new user to take charge. Just keep in mind that this is a readonly selection'
             >
               <Settings className='h-6 w-6' />

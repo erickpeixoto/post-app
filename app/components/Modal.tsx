@@ -1,5 +1,5 @@
 "use client"
-import { useRouter, useSearchParams } from "next/navigation"; // correção aqui
+import { useRouter, useSearchParams } from "next/navigation"; 
 import { useEffect } from "react";
 import {
   Modal,
@@ -30,7 +30,7 @@ export default function App({ children, open }: { children: React.ReactNode, ope
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={handleOnClose} size="4xl">
+      <Modal isOpen={isOpen} onClose={handleOnClose} size="5xl" >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1">User Profile</ModalHeader>
           <ModalBody>

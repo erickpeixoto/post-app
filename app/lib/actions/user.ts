@@ -14,6 +14,6 @@ export async function createUser(params: FormData) {
   const dataParsed = userSchema.parse(data)
 
   const { error }: any = await saveUser(dataParsed)
-  if (error) throw new Error(error)
+  if (error) return { error }
   revalidatePath('/user')
 }

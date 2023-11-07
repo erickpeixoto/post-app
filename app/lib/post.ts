@@ -9,6 +9,11 @@ export async function savePost(params: {
   isRepost?: boolean
 }) {
   try {
+    if (!(await canUserPost(params.authorId))) {
+      console.log('Post limit reached for today.')
+      return { error: 'Post limit reached for today.' }
+    }
+
     const data = {
       content: params.content,
       authorId: params.authorId,
@@ -19,7 +24,7 @@ export async function savePost(params: {
     const post = await db.post.create({ data: data })
     return post
   } catch (error: any) {
-    throw new Error(error)
+    return { error: error.message }
   }
 }
 
@@ -37,6 +42,11 @@ export async function saveShare({ content, authorId, shareType, postId }: any) {
       })
 
       contentOriginalPost = originalPost?.content ?? ''
+    }
+
+    if (!(await canUserPost(authorId))) {
+      console.log('Post limit reached for today.')
+      return { error: 'Post limit reached for today.' }
     }
 
     const newSharePost = await db.post.create({
@@ -57,8 +67,7 @@ export async function saveShare({ content, authorId, shareType, postId }: any) {
 
     return newSharePost
   } catch (error) {
-    console.error('Failed to save share:', error)
-    throw new Error('Failed to save share')
+    return { error: 'Failed to save share' }
   }
 }
 
@@ -77,13 +86,41 @@ export async function getPostsFromFollowingUsers(userId: number) {
       orderBy: {
         published: 'desc'
       },
-      select: {
-        id: true,
-        content: true,
-        published: true,
-        author: {
+      include: {
+        sharedPosts: {
           select: {
             id: true,
+            content: true,
+            shareType: true,
+            sharingUser: {
+              select: {
+                id: true,
+                username: true,
+                name: true
+              }
+            },
+            sharedPost: {
+              select: {
+                published: true
+              }
+            },
+            originalPost: {
+              select: {
+                published: true,
+                content: true,
+                author: {
+                  select: {
+                    id: true,
+                    name: true,
+                    username: true
+                  }
+                }
+              }
+            }
+          }
+        },
+        author: {
+          select: {
             name: true,
             username: true
           }
@@ -93,7 +130,7 @@ export async function getPostsFromFollowingUsers(userId: number) {
 
     return posts
   } catch (error: any) {
-    throw new Error(error.message)
+    return { error: error.message }
   }
 }
 
@@ -118,7 +155,7 @@ export async function getPosts() {
             },
             sharedPost: {
               select: {
-                published: true,
+                published: true
               }
             },
             originalPost: {
@@ -127,13 +164,14 @@ export async function getPosts() {
                 content: true,
                 author: {
                   select: {
+                    id: true,
                     name: true,
                     username: true
                   }
                 }
               }
-            },
-           },
+            }
+          }
         },
         author: {
           select: {
@@ -146,6 +184,28 @@ export async function getPosts() {
 
     return posts
   } catch (error: any) {
-    throw new Error(error.message)
+   return { error: error.message }
   }
+}
+async function canUserPost(authorId: number) {
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+
+  const endOfDay = new Date(startOfDay)
+  endOfDay.setDate(endOfDay.getDate() + 1)
+
+  const postCountToday = await db.post.count({
+    where: {
+      authorId,
+      OR: [
+        {
+          published: {
+            gte: startOfDay,
+            lt: endOfDay
+          }
+        }
+      ]
+    }
+  })
+  return postCountToday < 5
 }

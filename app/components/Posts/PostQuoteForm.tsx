@@ -2,33 +2,58 @@
 
 import { Textarea, Button, Avatar, AvatarIcon } from '@nextui-org/react'
 import { formatDistanceToNow } from 'date-fns'
-import { useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 
 interface RetweetForm {
   post: any
   handleClose: () => void
-  quoteAction: (params: FormData) => Promise<void>
+  quoteAction: (params: FormData) => void
 }
 
 export const QuoteForm = ({ post, handleClose, quoteAction }: RetweetForm) => {
   const formRef = useRef(null) as any
-  const [validationError, setValidationError] = useState({} as any)
+  const [validationError, setValidationError] = useState(null as any)
   const [characterCount, setCharacterCount] = useState(0)
 
   async function action(data: FormData) {
     const result: any = await quoteAction(data)
-    if (result?.error) {
+
+     if (result?.error) {
       setValidationError(result?.error)
     } else {
       if (formRef.current.reset) {
         formRef.current.reset()
+        handleClose()
       }
       setValidationError(null)
     }
   }
+  useEffect(() => {
+    console.log({ validationError })
+  }
+  , [validationError])
+
 
   return (
     <div className='flex w-full flex-col items-center'>
+
+      {validationError && (
+        <p
+          className='
+                   mb-5 mt-5 rounded-lg
+                   border border-red-500
+                   bg-red-100
+                   p-2
+                   text-sm
+                   font-semibold
+                   text-red-500
+                 
+                 '
+        >
+          <p>{JSON.stringify(validationError?.content?._errors.join(', ') || validationError)}</p>
+        </p>
+      )}
+      
       <div className='flex w-full flex-col items-center gap-4'>
         <p className='text-lg font-semibold'>Quote Tweet</p>
         <p className='text-sm text-gray-500'>Quote this to your followers?</p>
@@ -42,6 +67,7 @@ export const QuoteForm = ({ post, handleClose, quoteAction }: RetweetForm) => {
             className='w-full'
             isInvalid={validationError?.content}
             onChange={e => setCharacterCount(e.target.value.length)}
+            errorMessage={validationError?.content?._errors.join(', ')}
             name='content'
           />
 
@@ -57,7 +83,6 @@ export const QuoteForm = ({ post, handleClose, quoteAction }: RetweetForm) => {
             <Button
               type='submit'
               className='text-sm text-primary'
-              onClick={handleClose}
             >
               Share
             </Button>

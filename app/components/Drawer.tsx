@@ -4,16 +4,16 @@ import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
 import { Drawer } from 'vaul'
 import { Button } from '@nextui-org/react'
-import { RetweetForm } from './Posts/RetweetForm'
-import { QuoteForm } from './Posts/QuoteForm'
+import { RetweetForm } from '@/app/components/Posts/PostRetweetForm'
+import { QuoteForm } from '@/app/components/Posts/PostQuoteForm'
 
 interface MyDrawerProps {
   isOpen: boolean
   handleClose: () => void
   type: 'RETWEET' | 'QUOTE'
   post: any
-  retweetAction: (params: FormData) => Promise<void>
-  quoteAction: (params: FormData) => Promise<void>
+  retweetAction: (params: FormData) => void
+  quoteAction: (params: FormData) => void
   
 }
 
